@@ -12,7 +12,7 @@ use \RecursiveIteratorIterator;
 use \RecursiveDirectoryIterator;
 use \SplFileObject;
 
-class DecryptFiles extends Command
+class Decrypt extends AbstractCommand
 {
 
 	protected function configure()
@@ -20,7 +20,7 @@ class DecryptFiles extends Command
 		parent::configure();
 
 		$this
-			->setName('decrypt:files')
+			->setName('decrypt')
 			->setDescription('Decrypt Files')
 			->addArgument(
 				'path',
@@ -51,72 +51,17 @@ class DecryptFiles extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$this->input  = $input;
-		$this->output = $output;
-
-		if (!extension_loaded('mcrypt'))
-		{
-			$output->writeln('This script requires mcrypt.');
-			return;
-		}
-
-		$path = $input->getArgument('path');
-        if (empty($path) || !is_dir($path))
-        {
-        	$output->writeln('Make sure path is valid.');
-        	return;
-        }
-
-        if(($key = getenv('DOCMAN_ENCRYPTION_KEY')) === false) {
-            $key = $input->getOption('key');
-        }
-
-        if (empty($key))
-        {
-        	$output->writeln('Encryption Key is required.');
-        	return;
-        }
-
-		$directory    = basename($path);
-		$this->backup = dirname($path).'/.'.$directory.'-encrypted';
+		$path   = $this->path;
+		$backup = $this->_getBackupPath($path, 'encrypted');
 
         // Create a backup.
         $output->writeln('Creating a Backup...');
-        $this->_backup($path);
-
-		$cipher = $input->getOption('cipher');
-		$mode   = $input->getOption('mode');
+        $this->_backup($path, $backup);
 
 		// Encrypt Files.
 		$output->writeln('Decrypting files..');
-		$this->_decryptFiles($this->backup, $path);
+		$this->_decryptFiles($backup, $path);
 
-	}
-
-	protected function _backup($dir)
-	{
-		$backup = $this->backup;
-
-		if (!is_dir($backup)) {
-			mkdir($backup, 0755, true);
-		}
-
-		if (is_dir($backup))
-		{
-			$result = true;
-			$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir), RecursiveIteratorIterator::SELF_FIRST);
-			foreach ($iterator as $f)
-			{
-				if ($f->isDir()) {
-					$path = $backup.'/'.$iterator->getSubPathName();
-					if (!is_dir($path)) {
-						mkdir($path);
-					}
-				} else {
-					copy($f, $backup.'/'.$iterator->getSubPathName());
-				}
-			}
-		}
 	}
 
 	protected function _decryptFiles($source, $target)
@@ -133,7 +78,6 @@ class DecryptFiles extends Command
 						mkdir($path);
 					}
 				} else {
-					// $this->_decryptFile($f, $target.'/'.$iterator->getSubPathName());
 					$this->_decryptFile($f->getPathName(), $target.'/'.$iterator->getSubPathName());
 				}
 			}
@@ -149,7 +93,6 @@ class DecryptFiles extends Command
         	fwrite($output, fread($stream, 1024));
         }
 
-        // fwrite($output, stream_get_contents($stream));
         fclose($output);
         fclose($stream);
 	}
@@ -172,15 +115,5 @@ class DecryptFiles extends Command
         ));
 
         return $stream;
-    }
-
-    protected function _createIV()
-    {
-        mt_srand();
-
-        $size = mcrypt_get_iv_size($this->input->getOption('cipher'), $this->input->getOption('mode'));
-        $iv   = mcrypt_create_iv($size, MCRYPT_RAND);
-
-        return $iv;
     }
 }

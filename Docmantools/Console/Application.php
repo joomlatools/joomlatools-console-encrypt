@@ -10,7 +10,8 @@ class Application extends \Symfony\Component\Console\Application
 		$commands = parent::getDefaultCommands();
 
 		$commands = array_merge($commands, array(
-			new Command\EncryptFiles()
+			new Command\EncryptFiles(),
+			new Command\DecryptFiles(),
 		));
 
 		return $commands;

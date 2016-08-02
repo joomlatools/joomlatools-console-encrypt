@@ -12,15 +12,14 @@ use \RecursiveIteratorIterator;
 use \RecursiveDirectoryIterator;
 use \SplFileObject;
 
-class EncryptFiles extends Command
+class Encrypt extends AbstractCommand
 {
-
 	protected function configure()
 	{
 		parent::configure();
 
 		$this
-			->setName('encrypt:files')
+			->setName('encrypt')
 			->setDescription('Encrypt Files')
 			->addArgument(
 				'path',
@@ -51,72 +50,17 @@ class EncryptFiles extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$this->input  = $input;
-		$this->output = $output;
-
-		if (!extension_loaded('mcrypt'))
-		{
-			$output->writeln('This script requires mcrypt.');
-			return;
-		}
-
-		$path = $input->getArgument('path');
-        if (empty($path) || !is_dir($path))
-        {
-        	$output->writeln('Make sure path is valid.');
-        	return;
-        }
-
-        if(($key = getenv('DOCMAN_ENCRYPTION_KEY')) === false) {
-            $key = $input->getOption('key');
-        }
-
-        if (empty($key))
-        {
-        	$output->writeln('Encryption Key is required.');
-        	return;
-        }
-
-		$directory    = basename($path);
-		$this->backup = dirname($path).'/.'.$directory.'-backup';
+		$path   = $this->path;
+		$backup = $this->_getBackupPath($path);
 
         // Create a backup.
         $output->writeln('Creating a Backup...');
-        $this->_backup($path);
-
-		$cipher = $input->getOption('cipher');
-		$mode   = $input->getOption('mode');
+        $this->_backup($path, $backup);
 
 		// Encrypt Files.
 		$output->writeln('Encrypting files..');
-		$this->_encryptFiles($this->backup, $path);
+		$this->_encryptFiles($backup, $path);
 
-	}
-
-	protected function _backup($dir)
-	{
-		$backup = $this->backup;
-
-		if (!is_dir($backup)) {
-			mkdir($backup, 0755, true);
-		}
-
-		if (is_dir($backup))
-		{
-			$result = true;
-			$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir), RecursiveIteratorIterator::SELF_FIRST);
-			foreach ($iterator as $f)
-			{
-				if ($f->isDir()) {
-					$path = $backup.'/'.$iterator->getSubPathName();
-					if (!is_dir($path)) {
-						mkdir($path);
-					}
-				} else {
-					copy($f, $backup.'/'.$iterator->getSubPathName());
-				}
-			}
-		}
 	}
 
 	protected function _encryptFiles($source, $target)

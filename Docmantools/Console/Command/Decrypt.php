@@ -96,7 +96,7 @@ class Decrypt extends AbstractCommand
         $output = fopen($target, 'w+');
 
         while(!feof($stream)) {
-        	fwrite($output, fread($stream, 1024));
+        	fwrite($output, fread($stream, 8192));
         }
 
         fclose($output);
@@ -119,6 +119,7 @@ class Decrypt extends AbstractCommand
             'key'  => $this->input->getOption('key'),
             'iv'   => $iv,
         ));
+        stream_filter_append($stream, 'convert.base64-decode', STREAM_FILTER_READ);
 
         return $stream;
     }

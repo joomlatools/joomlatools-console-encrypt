@@ -100,8 +100,8 @@ class Encrypt extends AbstractCommand
         $destination = $this->_createEncryptedStream($target);
 
         // Copy original file into encrypted location file
-        foreach ($file as $line) {
-            $result = (fwrite($destination, $line) !== false);
+        while (!$file->eof()) {
+        	$result = (fwrite($destination, $file->fread(8192)) !== false);
         }
 
         // Cleanup
@@ -121,6 +121,7 @@ class Encrypt extends AbstractCommand
         $iv = $this->_createIV();
         fwrite($stream, $iv);
 
+        stream_filter_append($stream, 'convert.base64-encode', STREAM_FILTER_WRITE);
         stream_filter_append($stream, 'mcrypt.'.$this->input->getOption('cipher'), STREAM_FILTER_WRITE, array(
             'mode' => $this->input->getOption('mode'),
             'key'  => $this->input->getOption('key'),

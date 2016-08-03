@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 use \RecursiveIteratorIterator;
 use \RecursiveDirectoryIterator;
@@ -88,5 +89,33 @@ class AbstractCommand extends Command
 		$backup_path = dirname($path).'/.'.$directory.'-'.$type;
 
 		return $backup_path;
+	}
+
+	protected function _askDeleteConfirmation($path)
+	{
+		$helper = $this->getHelper('question');
+        $question = new ConfirmationQuestion('Do you want to remove the backup? (y/n): ', false);
+
+        if ($helper->ask($this->input, $this->output, $question)) {
+			$this->_removeBackup($path);
+        }
+	}
+
+	protected function _removeBackup($path)
+	{
+		if (is_dir($path))
+		{
+			$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST);
+			foreach ($iterator as $f)
+			{
+				if ($f->isDir()) {
+					rmdir($f->getRealPath());
+				} else {
+					unlink($f->getRealPath());
+				}
+			}
+
+			rmdir($path);
+		}
 	}
 }

@@ -62,6 +62,8 @@ class Decrypt extends AbstractCommand
 		$output->writeln('Decrypting files..');
 		$this->_decryptFiles($backup, $path);
 
+		// Confirm the deletion of the backup
+		$this->_askDeleteConfirmation($backup);
 	}
 
 	protected function _decryptFiles($source, $target)

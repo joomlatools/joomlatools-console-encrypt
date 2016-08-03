@@ -61,6 +61,8 @@ class Encrypt extends AbstractCommand
 		$output->writeln('Encrypting files..');
 		$this->_encryptFiles($backup, $path);
 
+		// Confirm the deletion of the backup
+		$this->_askDeleteConfirmation($backup);
 	}
 
 	protected function _encryptFiles($source, $target)

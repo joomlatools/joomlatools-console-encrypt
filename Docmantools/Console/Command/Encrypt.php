@@ -31,7 +31,7 @@ class Encrypt extends AbstractCommand
 				null,
 				InputOption::VALUE_REQUIRED,
 				'Encryption key',
-				'testkey'
+				'insecure'
 			)
 			->addOption('cipher',
 				null,

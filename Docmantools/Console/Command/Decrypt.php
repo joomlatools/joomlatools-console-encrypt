@@ -73,6 +73,10 @@ class Decrypt extends AbstractCommand
 			$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
 			foreach ($iterator as $f)
 			{
+				if ($this->_ignore($f)) {
+					continue;
+				}
+
 				if ($f->isDir())
 				{
 					$path = $target.'/'.$iterator->getSubPathName();

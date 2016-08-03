@@ -12,6 +12,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use \RecursiveIteratorIterator;
 use \RecursiveDirectoryIterator;
 use \SplFileObject;
+use \SplFileInfo;
 
 class AbstractCommand extends Command
 {
@@ -117,5 +118,22 @@ class AbstractCommand extends Command
 
 			rmdir($path);
 		}
+	}
+
+	protected function _ignore(SplFileInfo $file)
+	{
+		$ignore = false;
+
+		// Ignore files having .config extension eg. web.config
+		if (!$file->isDir() && $file->getExtension() == 'config') {
+			$ignore = true;
+		}
+
+		// Ignore hidden files and folders
+		if ($file->getBaseName()[0] === '.') {
+			$ignore = true;
+		}
+
+		return $ignore;
 	}
 }

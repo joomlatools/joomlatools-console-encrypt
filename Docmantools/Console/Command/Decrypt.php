@@ -70,7 +70,7 @@ class Decrypt extends AbstractCommand
 	{
 		if (is_dir($source) && is_dir($target))
 		{
-			$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
+			$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
 			foreach ($iterator as $f)
 			{
 				if ($f->isDir())

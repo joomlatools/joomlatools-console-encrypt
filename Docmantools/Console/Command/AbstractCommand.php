@@ -11,7 +11,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 use \RecursiveIteratorIterator;
 use \RecursiveDirectoryIterator;
-use \SplFileObject;
 use \SplFileInfo;
 
 class AbstractCommand extends Command

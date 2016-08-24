@@ -10,7 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use \RecursiveIteratorIterator;
 use \RecursiveDirectoryIterator;
-use \SplFileObject;
 
 class Decrypt extends AbstractCommand
 {

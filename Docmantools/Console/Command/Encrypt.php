@@ -10,7 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use \RecursiveIteratorIterator;
 use \RecursiveDirectoryIterator;
-use \SplFileObject;
 
 class Encrypt extends AbstractCommand
 {
@@ -93,20 +92,18 @@ class Encrypt extends AbstractCommand
 	{
 		$result = false;
 
-        if (!$file instanceof SplFileObject) {
-            $file = new SplFileObject($file);
-        }
-
         $destination = $this->_createEncryptedStream($target);
 
+        $handle = fopen($file, 'r');
+
         // Copy original file into encrypted location file
-        while (!$file->eof()) {
-        	$result = (fwrite($destination, $file->fread(8192)) !== false);
+        while(!feof($handle)) {
+        	$result = (fwrite($destination, fread($handle, 8192)) !== false);
         }
 
         // Cleanup
         @fclose($destination);
-        // @unlink($file->getRealPath());
+        @fclose($handle);
 
         return $result;
 	}

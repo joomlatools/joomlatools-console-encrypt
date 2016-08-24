@@ -92,9 +92,11 @@ class Encrypt extends AbstractCommand
 	{
 		$result = false;
 
-        $destination = $this->_createEncryptedStream($target);
+		if(($handle = fopen($file, 'r')) === 0) {
+            throw new Exception('Unable to read file at: '.$file);
+        }
 
-        $handle = fopen($file, 'r');
+        $destination = $this->_createEncryptedStream($target);
 
         // Copy original file into encrypted location file
         while(!feof($handle)) {
@@ -111,7 +113,7 @@ class Encrypt extends AbstractCommand
     protected function _createEncryptedStream($target)
     {
         if(($stream = fopen($target, 'w+')) === 0) {
-            throw new KControllerExceptionActionFailed('Unable to create file at: '.$target);
+            throw new Exception('Unable to create file at: '.$target);
         }
 
         // Generate the IV

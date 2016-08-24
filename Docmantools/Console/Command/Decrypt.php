@@ -105,7 +105,7 @@ class Decrypt extends AbstractCommand
     protected function _createDecryptedStream($source)
     {
   		if(($stream = fopen($source, 'r')) === 0) {
-            throw new KControllerExceptionActionFailed('Unable to read file at: '.$source);
+            throw new Exception('Unable to read file at: '.$source);
         }
 
         // Generate the IV

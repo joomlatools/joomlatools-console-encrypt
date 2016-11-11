@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use \RecursiveIteratorIterator;
 use \RecursiveDirectoryIterator;
 
+use Encrypt\Console\AbstractCommand;
+
 class Encrypt extends AbstractCommand
 {
 	protected function configure()

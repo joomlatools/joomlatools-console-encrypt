@@ -47,6 +47,8 @@ class AbstractCommand extends Command
 			throw new \RuntimeException(sprintf('The path %s does not exist', $path));
         }
 
+        $key = $input->getOption('key');
+
         if (empty($key)) {
 			throw new \RuntimeException('Encryption Key is required');
         }

@@ -91,7 +91,7 @@ class AbstractCommand extends Command
 	protected function _askDeleteConfirmation($path)
 	{
 		$helper = $this->getHelper('question');
-        $question = new ConfirmationQuestion('Do you want to remove the backup? (y/n): ', false);
+        $question = new ConfirmationQuestion('Do you want to remove the backup "'.$path.'"? [y/n]: ', false);
 
         if ($helper->ask($this->input, $this->output, $question)) {
 			$this->_removeBackup($path);

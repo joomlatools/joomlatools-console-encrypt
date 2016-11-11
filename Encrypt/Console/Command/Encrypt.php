@@ -93,7 +93,7 @@ class Encrypt extends AbstractCommand
 		$result = false;
 
 		if(($handle = fopen($file, 'r')) === 0) {
-            throw new Exception('Unable to read file at: '.$file);
+			throw new \RuntimeException(sprintf('Unable to read file at: %s', $file));
         }
 
         $destination = $this->_createEncryptedStream($target);
@@ -113,7 +113,7 @@ class Encrypt extends AbstractCommand
     protected function _createEncryptedStream($target)
     {
         if(($stream = fopen($target, 'w+')) === 0) {
-            throw new Exception('Unable to create file at: '.$target);
+			throw new \RuntimeException(sprintf('Unable to create file at: %s', $target));
         }
 
         // Generate the IV

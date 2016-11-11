@@ -34,7 +34,7 @@ class AbstractCommand extends Command
 		$output = $this->output;
 
 		if (!extension_loaded('mcrypt')) {
-			throw new \RuntimeException('This script requires mcrypt'));
+			throw new \RuntimeException('This script requires mcrypt');
 		}
 
 		$path = $input->getArgument('path');

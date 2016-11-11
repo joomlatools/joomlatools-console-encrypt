@@ -1,6 +1,6 @@
 <?php
 
-namespace Docmantools\Console;
+namespace Encrypt\Console;
 
 class Application extends \Symfony\Component\Console\Application
 {

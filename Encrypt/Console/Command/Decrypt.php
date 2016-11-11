@@ -105,7 +105,7 @@ class Decrypt extends AbstractCommand
     protected function _createDecryptedStream($source)
     {
   		if(($stream = fopen($source, 'r')) === 0) {
-            throw new Exception('Unable to read file at: '.$source);
+			throw new \RuntimeException(sprintf('Unable to read file at: %s', $source));
         }
 
         // Generate the IV

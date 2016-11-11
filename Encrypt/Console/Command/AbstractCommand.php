@@ -33,27 +33,22 @@ class AbstractCommand extends Command
 		$input  = $this->input;
 		$output = $this->output;
 
-		if (!extension_loaded('mcrypt'))
-		{
-			$output->writeln('This script requires mcrypt.');
-			exit();
+		if (!extension_loaded('mcrypt')) {
+			throw new \RuntimeException('This script requires mcrypt'));
 		}
 
 		$path = $input->getArgument('path');
-        if (empty($path) || !is_dir($path))
-        {
-        	$output->writeln('Make sure path is valid.');
-        	exit();
+
+		if (empty($path)) {
+			throw new \RuntimeException('Please provide a valid path');
+		}
+
+        if (!is_dir($path)) {
+			throw new \RuntimeException(sprintf('The path %s does not exist', $path));
         }
 
-        if(($key = getenv('DOCMAN_ENCRYPTION_KEY')) === false) {
-            $key = $input->getOption('key');
-        }
-
-        if (empty($key))
-        {
-        	$output->writeln('Encryption Key is required.');
-        	exit();
+        if (empty($key)) {
+			throw new \RuntimeException('Encryption Key is required');
         }
 
 		$this->key  = $key;

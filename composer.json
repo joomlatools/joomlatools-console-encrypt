@@ -1,8 +1,17 @@
 {
-    "require": {
-        "symfony/console": "~2.7"
-    },
-	"autoload": {
-        "psr-0": {"Docmantools\\": ""}
+  "name": "joomlatools/console-encrypt",
+  "license": "MPLv2",
+  "description": "Plugin that encrypts/decrypts files in a folder for joomla-console",
+  "homepage": "https://github.com/joomlatools/joomlatools-console-encrypt",
+  "type": "joomlatools-console-plugin",
+  "authors": [
+    {
+      "name": "Joomlatools",
+      "email": "info@joomlatools.com",
+      "homepage": "https://www.joomlatools.com"
     }
+  ],
+  "autoload": {
+    "psr-0": {"Encrypt\\": "/"}
+  }
 }

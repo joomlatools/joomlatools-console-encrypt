@@ -1,4 +1,11 @@
 <?php
+/**
+ * Joomlatools Console encrypt plugin - https://github.com/joomlatools/joomlatools-console-encrypt
+ *
+ * @copyright	Copyright (C) 2011 - 2016 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		Mozilla Public License, version 2.0
+ * @link		http://github.com/joomlatools/joomlatools-console-encrypt for the canonical source repository
+ */
 
 namespace Encrypt\Console\Command;
 
@@ -13,6 +20,12 @@ use \RecursiveDirectoryIterator;
 
 use Encrypt\Console\AbstractCommand;
 
+/**
+ * Encrypt plugin class.
+ *
+ * @author  Allan Pilarca <https://github.com/allanpilarca>
+ * @package Joomlatools\Console
+ */
 class Encrypt extends AbstractCommand
 {
 	protected function configure()

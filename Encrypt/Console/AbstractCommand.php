@@ -3,7 +3,7 @@
  * Joomlatools Console encrypt plugin - https://github.com/joomlatools/joomlatools-console-encrypt
  *
  * @copyright	Copyright (C) 2011 - 2016 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @license		Mozilla Public License, version 2.0
  * @link		http://github.com/joomlatools/joomlatools-console-encrypt for the canonical source repository
  */
 

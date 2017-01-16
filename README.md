@@ -38,7 +38,7 @@ Requirements
 ------------
 
 * Composer
-* [Joomlatools Console](https://github.com/joomlatools/joomlatools-console) >= 1.3
+* [Joomlatools Console](https://github.com/joomlatools/joomlatools-console) >= 1.4.7
 * mcrypt PHP extension
 
 Contributing
